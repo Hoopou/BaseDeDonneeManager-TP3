@@ -12,5 +12,4 @@
     <footer>
         <p>Créer par Vincent Boutot</p>
     </footer>
-
 </html>
