@@ -1,19 +1,23 @@
 <?php
 
-    abstract class Model{
+     class Model{
         private static $_bdd;
 
-        private static function setBdd()
+        private static function setBdd(Connection $_connection)
         {
-            self::$_bdd = new PDO('mysql:host=localhost;dbname=miniblog;charset=utf8',
-            'root','password');
+            if($_connection->database() == null){
+                self::$_bdd = new PDO('mysql:host='.$_connection->host().';charset=utf8', $_connection->user(),$_connection->password());
+            }else{
+                $database = (Database) ($_connection->database());
+                self::$_bdd = new PDO('mysql:host='.$_connection->host().';dbname='.$database->name().';charset=utf8', $_connection->user(),$_connection->password());
+            }
             self::$_bdd->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
         }
 
-        protected function getBdd()
+        protected function getBdd(Connection $_connection)
         {
             if(self::$_bdd == null)
-                self::setBdd();
+                self::setBdd($_connection);
             return self::$_bdd;
         }
 
@@ -30,38 +34,55 @@
         //     $req->closeCursor();
         // }
 
-        protected function getConnectionValidity(){ // en essayant de se connecter a la bd
+        function getConnectionValidity(Connection $_connection){ // en essayant de se connecter a la bd
+            $access = false;
+            try{
+                $req = $this->getBdd($_connection)->prepare('show databases;');
+                $access = true;
+            }catch(Exception $e){
+
+            }
+            return $access;
+            // $req->execute();
         }
 
-        protected function getAllDatabases(){ // Command = 'describe databases;'
-
+        function getAllDatabases(Connection $_connection){ // Command = 'describe databases;'
+            $var = [];
+            $req = $this->getBdd($_connection)->prepare('show databases;');
+            $req->execute();
+            while($data = $req->fetch(PDO::FETCH_ASSOC))
+            {
+                $var[] = new Database($data['Database']);
+            }            
+            return $var;
+            $req->closeCursor();
         }
 
-        protected function getAllTablesFromDatabases(){ // Command = 'SHOW TABLES FROM [DATABASE];'
-
-        }
-
-        protected function getAllColumnsFromTable(){ // Command = 'SHOW columns FROM [TABLE];'
-
-        }
-
-        protected function getAllRows(){ // Command = 'SELECT * FROM [TABLE];'
-
-        }
-
-        protected function getRowWhere(){ // Command = 'SELECT * FROM [TABLE] WHERE [COLUMN_NAME]=[VALUES] AND [COLUMN_NAME]=[VALUES] ...;'
-
-        }
-
-        protected function deleteRowWhere(){// Command = 'DELETE FROM [TABLE] WHERE [COLUMN_NAME]=[VALUES] AND [COLUMN_NAME]=[VALUES] ...;'
-
-        }
-
-        protected function updateRowWhere(){// Command = 'UPDATE [TABLE] SET [COLUMN_NAME]=[NEW_VALUES],[COLUMN_NAME]=[NEW_VALUES]... WHERE [COLUMN_NAME]=[OLD_VALUES] ...;'
+        function getAllTablesFromDatabases(){ // Command = 'SHOW TABLES FROM [DATABASE];'
 
         }
 
-        protected function getTableInformations(){
+        function getAllColumnsFromTable(){ // Command = 'SHOW columns FROM [TABLE];'
+
+        }
+
+        function getAllRows(){ // Command = 'SELECT * FROM [TABLE];'
+
+        }
+
+        function getRowWhere(){ // Command = 'SELECT * FROM [TABLE] WHERE [COLUMN_NAME]=[VALUES] AND [COLUMN_NAME]=[VALUES] ...;'
+
+        }
+
+        function deleteRowWhere(){// Command = 'DELETE FROM [TABLE] WHERE [COLUMN_NAME]=[VALUES] AND [COLUMN_NAME]=[VALUES] ...;'
+
+        }
+
+        function updateRowWhere(){// Command = 'UPDATE [TABLE] SET [COLUMN_NAME]=[NEW_VALUES],[COLUMN_NAME]=[NEW_VALUES]... WHERE [COLUMN_NAME]=[OLD_VALUES] ...;'
+
+        }
+
+        function getTableInformations(){
             // Command = 'DESCRIBE [TABLE];'
             //OR
             // Command = 'SHOW FULL COLUMNS FROM [TABLE];'

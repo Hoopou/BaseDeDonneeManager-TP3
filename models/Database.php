@@ -4,6 +4,11 @@ class Database
     private $_name;
     private $_arrayTables;
 
+    public function __construct($fromDB)
+    {
+        $this->_name = $fromDB;
+    }
+
     public function setName($name)
     {
         if(is_string($name))

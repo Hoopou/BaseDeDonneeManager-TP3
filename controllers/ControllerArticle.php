@@ -11,7 +11,7 @@
             if(isset($url) && count($url) > 2)
                 throw new Exception('Page introuvable');
             else
-            $this->article($url[1]);
+                $this->article($url[1]);
         }
 
         private function article($id)

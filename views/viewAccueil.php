@@ -1,5 +1,20 @@
-<?php $this->_t = 'Mon blog';
-foreach($articles as $article):?>
-<a href="<?= URL?>Article/<?= $article->id()?>" ><h2><?= $article->title() ?></h2></a>
-<time><?= $article->date()?></time>
-<?php endforeach;?>
+<div class="center">
+    <form action="<?= URL?>?url=databases" method="post" class="center">
+        <label for="ip" class="right">IP :</label><input type="text" name="ip" /><br />
+        <label for="user" class="right">User :</label><input type="text" name="user" /><br />
+        <label for="password" class="right">Password :</label><input type="text" name="password" /><br />
+        <label for="table" class="right"></label><input type="hidden" name="table" value="" /><br />
+        <label for="button" class="right" style="margin-top:10px;"><input type="submit" value="Valider" class="center" /><br />
+    </form>
+</div>
+<hr>
+
+<div class="center">
+    <b>Vous pouvez modifier les données des tables seulement si la première colonne est une clé primaire ou valeur unique!</b>
+</div>
+
+<div class="center">
+    <form action="?url=APropos" method="post" class="center">
+        <label for="button" class="right" style="margin-top:10px;"><input type="submit" value="À Propos" class="center" /><br />
+    </form>
+</div>
