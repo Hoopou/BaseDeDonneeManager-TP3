@@ -4,10 +4,9 @@
         private $_value;
         private $_type;
 
-        public function __construct()
+        public function __construct($itemFromBd)
         {
-            // $this->setType($type);
-            // $this->setValue($value);
+            $this->_value = $itemFromBd;
         }
 
         public function setValue($value)

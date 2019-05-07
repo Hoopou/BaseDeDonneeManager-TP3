@@ -5,6 +5,12 @@ class Table
     private $_arrayType;
     private $_arrayRows;
 
+    public function __construct($fromDB)
+    {
+        $fromDB = (String)$fromDB;
+        $this->_name = $fromDB;
+    }
+
     public function setName($name)
     {
         if(is_string($name))
@@ -30,7 +36,7 @@ class Table
     {
         return $this->_arrayType;
     }
-    public function arrayRow()
+    public function &arrayRow()
     {
         return $this->_arrayRow;
     }

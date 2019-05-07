@@ -58,31 +58,59 @@
             $req->closeCursor();
         }
 
-        function getAllTablesFromDatabases(){ // Command = 'SHOW TABLES FROM [DATABASE];'
+        function getAllTablesFromDatabases(Connection $_connection , String $database){ // Command = 'SHOW TABLES FROM [DATABASE];'
+            $var = [];
+            $req = $this->getBdd($_connection)->prepare('SHOW TABLES FROM '.$database.';');
+            $req->execute();
+            while($data = $req->fetch(PDO::FETCH_ASSOC))
+            {
+                $var[] = new Table($data['Tables_in_'.$database]);
+            }            
+            return $var;
+            $req->closeCursor();
+        }
+
+        function getAllColumnsFromTable(Connection $_connection , String $databaseName, String $tableName){ // Command = 'SHOW columns FROM [TABLE];'
+            $var = [];
+            $req = $this->getBdd($_connection)->prepare('SHOW columns FROM '.$databaseName.'.'.$tableName.';');
+            $req->execute();
+            while($data = $req->fetch(PDO::FETCH_ASSOC))
+            {
+                $var[] = new Column($data);
+            }            
+
+            return $var;
+            $req->closeCursor();
+        }
+
+        function &getAllRows(Connection $_connection , String $databaseName, String $tableName){ // Command = 'SELECT * FROM [TABLE];'
+            $var = [];
+            $req = $this->getBdd($_connection)->prepare('SELECT * FROM '.$databaseName.'.'.$tableName.';');
+            $req->execute();
+            $id = 0;
+            while($data = $req->fetch(PDO::FETCH_ASSOC))
+            {
+                $var[] = new Row($data , $id);
+                $id++;
+            }            
+
+            return $var;
+            $req->closeCursor();
+        }
+
+        function getRowWhere(Connection $_connection){ // Command = 'SELECT * FROM [TABLE] WHERE [COLUMN_NAME]=[VALUES] AND [COLUMN_NAME]=[VALUES] ...;'
 
         }
 
-        function getAllColumnsFromTable(){ // Command = 'SHOW columns FROM [TABLE];'
+        function deleteRowWhere(Connection $_connection){// Command = 'DELETE FROM [TABLE] WHERE [COLUMN_NAME]=[VALUES] AND [COLUMN_NAME]=[VALUES] ...;'
 
         }
 
-        function getAllRows(){ // Command = 'SELECT * FROM [TABLE];'
+        function updateRowWhere(Connection $_connection){// Command = 'UPDATE [TABLE] SET [COLUMN_NAME]=[NEW_VALUES],[COLUMN_NAME]=[NEW_VALUES]... WHERE [COLUMN_NAME]=[OLD_VALUES] ...;'
 
         }
 
-        function getRowWhere(){ // Command = 'SELECT * FROM [TABLE] WHERE [COLUMN_NAME]=[VALUES] AND [COLUMN_NAME]=[VALUES] ...;'
-
-        }
-
-        function deleteRowWhere(){// Command = 'DELETE FROM [TABLE] WHERE [COLUMN_NAME]=[VALUES] AND [COLUMN_NAME]=[VALUES] ...;'
-
-        }
-
-        function updateRowWhere(){// Command = 'UPDATE [TABLE] SET [COLUMN_NAME]=[NEW_VALUES],[COLUMN_NAME]=[NEW_VALUES]... WHERE [COLUMN_NAME]=[OLD_VALUES] ...;'
-
-        }
-
-        function getTableInformations(){
+        function getTableInformations(Connection $_connection){
             // Command = 'DESCRIBE [TABLE];'
             //OR
             // Command = 'SHOW FULL COLUMNS FROM [TABLE];'

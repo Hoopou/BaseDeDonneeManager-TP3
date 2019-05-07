@@ -7,7 +7,6 @@
 
         public function __construct($url)
         {
-            var_dump($url);
             if(isset($url) && count($url) > 1){
                 throw new Exception('Page introuvable');
             }else{

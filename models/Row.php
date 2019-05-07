@@ -2,14 +2,17 @@
 class Row
 {
     private $_arrayType;
-    private $_arrayItems;
+    private $_arrayItems = array();
     private $_myId;
 
-    public function __construct()
+    public function __construct($data , int $id)
     {
-        // $this->setMyId($myid);
-        // $this->setArrayType($arrayType);
-        // $this->setArrayItems($arrayItems);
+        $this->_myId = $id;
+        foreach($data as $key => $value)
+        {
+            $item = new Item($value);
+            array_push($this->_arrayItems , $item);
+        }
     }
 
     public function setMyId($myId)

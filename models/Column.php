@@ -7,8 +7,9 @@
         private $_key;
         private $_isAutoIncrement;
 
-        public function __construct()
+        public function __construct($fromDB)
         {
+            $this->_name = $fromDB;
         }
 
         public function setName($name)

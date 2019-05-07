@@ -1,5 +1,6 @@
 <?php
     require_once('views/View.php');
+    require_once('controllers/ControllerHelper.php');
 
     class ControllerDatabases
     {
@@ -17,16 +18,14 @@
         }    
 
         private function connecter(){
-            $this->_model = new Model();
+            $this->_model = new ModelsManager();
 
-            $conn = new Connection();
-            $conn->setHost($_POST['ip']);
-            $conn->setPassword($_POST['password']);
-            $conn->setUser($_POST['user']);
+            $conn = ControllerHelper::buildConnection();
 
             $connection = $this->_model->getConnectionValidity($conn);
 
             if($connection){
+                $GLOBALS['ip'] = 'salut21';
                 $this->afficherBaseDonnees($conn);
             }else{
                 throw new Exception('Les informations entrées ne sont pas valides!');
@@ -35,11 +34,9 @@
         }
 
         private function afficherBaseDonnees(Connection $conn){
-            $databases = $this->_model->getAllDatabases($conn);
-            // var_dump($databases);
-            $conn->setDatabases($databases);
+            $this->_model->implementsDatabasesIntoConnection($conn);
             $this->_view = new View('Databases');
-            $this->_view->generate(array('databases' => $databases));
+            $this->_view->generate(array('databases' => $conn->database() , 'conn' => $conn));
         }
     }
 

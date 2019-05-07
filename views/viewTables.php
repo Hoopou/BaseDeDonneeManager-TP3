@@ -2,17 +2,16 @@
 <div class="center">
     <table>
         <tr>
-            <th>Databases</th>
+            <th>Tables</th>
             <th>Selectionner</th>
         </tr>
-        <?php foreach($databases as $database):?>
-            
+        <?php foreach($tables as $table):?>
             <tr>
                 <td>
-                    <?= $database->name() ?>
+                    <p><?= $table->name() ?></p>
                 </td>
                 <th>
-                    <form action="<?= URL?>?url=tables&database=<?= $database->name() ?>" method="post" class="center">
+                    <form action="<?= URL?>?url=rows&database=<?= $database ?>&table=<?=$table->name() ?>" method="post" class="center">
                         <?php require('templateUserData.php'); ?>
                         <input type="submit" value="Selectionner" name="action" class="center"/>
                     </form>
@@ -25,6 +24,7 @@
 <style>
     table, th, td {
     border: 1px solid black;
-    /* border-collapse: collapse; */
+     border-collapse: collapse; 
+     botto
     }
 </style>
