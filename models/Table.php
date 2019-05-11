@@ -21,7 +21,7 @@ class Table
         if(is_array($arrayType))
         $this->_arrayType = $arrayType;
     }
-    public function setArrayRows($arrayRows)
+    public function setArrayRows(Array $arrayRows)
     {
         if(is_array($arrayRows))
         $this->_arrayRows = $arrayRows;
@@ -36,9 +36,9 @@ class Table
     {
         return $this->_arrayType;
     }
-    public function &arrayRow()
+    public function arrayRow()
     {
-        return $this->_arrayRow;
+        return $this->_arrayRows;
     }
 
 }

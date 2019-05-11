@@ -11,8 +11,8 @@
         {
             if(isset($url) && count($url) > 1){
                 throw new Exception('Page introuvable');
-            }else if(isset($_GET['database'])){
-                $databases = $_GET['database'];
+            }else if(isset($_POST['database'])){
+                $databases = $_POST['database'];
                 $conn = ControllerHelper::buildConnection();
                 $this->afficherTables($conn , $databases);
             }else{
@@ -22,7 +22,7 @@
 
         private function afficherTables(Connection $conn , String $databaseName){
             $model = new ModelsManager();
-            $model->implementsDatabasesIntoConnection($conn);
+            $conn = $model->implementsDatabasesIntoConnection($conn);
             //ici, la connection a implementer toute les bases de donnée sans les tables
             $database = ControllerHelper::getDatabaseWithName($conn, $databaseName);
             //ici, la variable database contient la bonne base de donnée à qui il faut ajouter les tables

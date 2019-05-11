@@ -4,6 +4,7 @@
         <label for="user" class="right">User :</label><input type="text" name="user" /><br />
         <label for="password" class="right">Password :</label><input type="text" name="password" /><br />
         <label for="table" class="right"></label><input type="hidden" name="table" value="" /><br />
+        <label for="table" class="right"></label><input type="hidden" name="database" value="" /><br />
         <label for="button" class="right" style="margin-top:10px;"><input type="submit" value="Valider" class="center" /><br />
     </form>
 </div>

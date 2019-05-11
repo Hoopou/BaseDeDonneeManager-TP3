@@ -2,7 +2,7 @@
 
 class ModelsManager extends Model
 {
-    public function implementsDatabasesIntoConnection(Connection $conn){
+    public function &implementsDatabasesIntoConnection(Connection $conn){
         $conn->setDatabases($this->getAllDatabases($conn));
         return $conn;
     }
@@ -12,8 +12,8 @@ class ModelsManager extends Model
         return $database;
     }
 
-    public function &implementsRowsIntoTable(Connection $conn , String $databaseName, Table $table){
-        $table->setArrayRows($this->getAllRows($conn ,$databaseName, $table->name()));
+    public function &implementsRowsIntoTable(Connection $conn , Database $database, Table $table){
+        $table->setArrayRows($this->getAllRows($conn ,$database->name(), $table->name()));
         return $table;
     }
 }

@@ -12,10 +12,10 @@
 
             if(isset($url) && count($url) > 1){
                 throw new Exception('Page introuvable');
-            }else if(isset($_GET['database']) && isset($_GET['table'])){
-                $databases = $_GET['database'];
+            }else if(isset($_POST['database']) && isset($_POST['table'])){
+                $databases = $_POST['database'];
                 $conn = ControllerHelper::buildConnection();
-                $this->afficherRows($conn , $databases , $_GET['table']);
+                $this->afficherRows($conn , $databases , $_POST['table']);
             }else{
                 throw new Exception('Page introuvable');
             }
@@ -29,22 +29,15 @@
             //ici, la variable database contient la bonne base de donnée à qui il faut ajouter les tables
             $model->implementsTablesIntoDatabase($conn , $database);
             // ici, la base de donnée contient toutes les tables 
-            $table = new Table('');
-            foreach($database->arrayTables() as $_table){
-                if($_table->name() == $tableName){
-                    $table = $_table;
-                }
-            }
+            $table = ControllerHelper::getTableWithName($database , $tableName);
             //ici, la table est la bonne
-            $model->implementsRowsIntoTable($conn ,$database->name(), $table);
+            $table = $model->implementsRowsIntoTable($conn ,$database, $table);
             //ici, la table contient toutes les rangées avec les items
             // var_dump($database->arrayTables());
             // var_dump($table->arrayRow());
 
             $this->_view = new View('Rows');
-            $this->_view->generate(array('table' => $table->arrayRow(),
-                                         'database' => $database->name()
-                                        ));
+            $this->_view->generate(array('table' => $table));
         }
     }
 

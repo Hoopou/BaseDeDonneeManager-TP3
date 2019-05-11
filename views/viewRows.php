@@ -4,16 +4,17 @@
             <th>Tables</th>
             <th>Selectionner</th>
         </tr> -->
-        <?php foreach ($table as $row) : ?>
+        <?php var_dump($table)?>
+        <?php foreach ($table->arrayRow() as $row) : ?>
             <tr>
-                <?php foreach ($row->arrayItems() as $item) : ?>
+            <?php foreach ($row->arrayItems() as $item) : ?>
                     <td>
                         <p><?= $item->value() ?></p>
                     </td>
                 <?php endforeach; ?>
 
                 <th>
-                    <form action="<?= URL ?>?url=rows&database=<?= $database ?>&table=<?= $table ?>" method="post" class="center">
+                    <form action="<?= URL ?>?url=rows" method="post" class="center">
                         <?php require('templateUserData.php'); ?>
                         <input type="submit" value="Selectionner" name="action" class="center" />
                     </form>

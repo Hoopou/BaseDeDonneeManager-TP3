@@ -12,8 +12,9 @@
                     <?= $database->name() ?>
                 </td>
                 <th>
-                    <form action="<?= URL?>?url=tables&database=<?= $database->name() ?>" method="post" class="center">
+                    <form action="<?= URL?>?url=tables" method="post" class="center">
                         <?php require('templateUserData.php'); ?>
+                        <input type="hidden" value="<?= $database->name() ?>" name="database" class="center">
                         <input type="submit" value="Selectionner" name="action" class="center"/>
                     </form>
                 </th>
