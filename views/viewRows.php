@@ -1,10 +1,12 @@
 <div class="center">
     <table>
-        <!-- <tr>
-            <th>Tables</th>
-            <th>Selectionner</th>
-        </tr> -->
-        <?php var_dump($table)?>
+         <tr>
+            <?php foreach ($table->arrayColumns() as $columns) : ?>
+                <th><?= $columns->name()?></th>
+            <?php endforeach; ?>
+            <th> Modifier</th>
+            <th> Supprimer</th>
+        </tr> 
         <?php foreach ($table->arrayRow() as $row) : ?>
             <tr>
             <?php foreach ($row->arrayItems() as $item) : ?>
@@ -16,7 +18,14 @@
                 <th>
                     <form action="<?= URL ?>?url=rows" method="post" class="center">
                         <?php require('templateUserData.php'); ?>
-                        <input type="submit" value="Selectionner" name="action" class="center" />
+                        <input type="submit" value="Modifier" name="action" class="center" />
+                    </form>
+                </th>
+
+                <th>
+                    <form action="<?= URL ?>?url=rows" method="post" class="center">
+                        <?php require('templateUserData.php'); ?>
+                        <input type="submit" value="Supprimer" name="action" class="center" />
                     </form>
                 </th>
 

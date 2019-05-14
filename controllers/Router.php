@@ -12,7 +12,9 @@ class Router
         try
         {
             spl_autoload_register(function($class){
-                require_once('models/'.$class.'.php');
+                try{
+                    require_once('models/'.$class.'.php');
+                }catch(Exception $e){}
             });
 
             $url[] = '';

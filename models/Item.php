@@ -1,7 +1,7 @@
 <?php
     class Item
     {
-        private $_value;
+        private $_value = "N/A";
         private $_type;
 
         public function __construct($itemFromBd)

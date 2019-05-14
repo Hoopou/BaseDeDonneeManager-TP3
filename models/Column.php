@@ -9,7 +9,12 @@
 
         public function __construct($fromDB)
         {
-            $this->_name = $fromDB;
+            // $this->_name = $fromDB;
+            $this->_name = $fromDB["Field"];
+            $this->setType($fromDB["Type"]);
+            $this->setCanBeNull($fromDB["Null"] === 'YES'?TRUE:FALSE);
+            $this->setKey($fromDB['Key']);
+            $this->setIsAutoIncrement($fromDB['Key'] === 'auto_increment'?TRUE:FALSE);
         }
 
         public function setName($name)
@@ -21,16 +26,17 @@
         {
             if(is_string($type))
             {
-                if(endsWith($type , ')')){
-                    $type = split('(' , $type)[0];
-                }
+                // if( strpos($type,'('))
+                //     $type = preg_split('(' , $type)[0];
+                if( strpos($type,'('))
+                    $type = substr($type, 0, strrpos($type, '('));
+                    
                     if(Type::isValidName($type))
                         $this->_type = $type;
             }
         }
-        public function setCanBeNull($canBeNull)
+        public function setCanBeNull(bool $canBeNull)
         {
-            if(is_bool($canBeNull))
             $this->_canBeNull = $canBeNull;
         }
         public function setKey($key)
@@ -38,9 +44,8 @@
             if(is_string($key))
             $this->_key = $key;
         }
-        public function setIsAutoIncrement($autoIncrement)
+        public function setIsAutoIncrement(bool $autoIncrement)
         {
-            if(is_bool($autoIncrement))
             $this->_isAutoIncrement = $autoIncrement;
         }
     

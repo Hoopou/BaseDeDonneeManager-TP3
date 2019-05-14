@@ -72,7 +72,7 @@
 
         function getAllColumnsFromTable(Connection $_connection , String $databaseName, String $tableName){ // Command = 'SHOW columns FROM [TABLE];'
             $var = [];
-            $req = $this->getBdd($_connection)->prepare('SHOW columns FROM '.$databaseName.'.'.$tableName.';');
+            $req = $this->getBdd($_connection)->prepare('DESCRIBE '.$databaseName.'.'.$tableName.';');
             $req->execute();
             while($data = $req->fetch(PDO::FETCH_ASSOC))
             {
@@ -110,11 +110,22 @@
 
         }
 
-        function getTableInformations(Connection $_connection){
+        function getTableInformations(Connection $_connection , String $databaseName, String $tableName){
             // Command = 'DESCRIBE [TABLE];'
             //OR
             // Command = 'SHOW FULL COLUMNS FROM [TABLE];'
+            $var = [];
+            $req = $this->getBdd($_connection)->prepare('DESCRIBE '.$databaseName.'.'.$tableName.';');
+            $req->execute();
+            $id = 0;
+            while($data = $req->fetch(PDO::FETCH_ASSOC))
+            {
+                $var[] = new Row($data , $id);
+                $id++;
+            }            
 
+            return $var;
+            $req->closeCursor();
 
 
         }

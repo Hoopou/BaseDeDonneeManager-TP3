@@ -2,7 +2,7 @@
 class Table
 {
     private $_name;
-    private $_arrayType;
+    private $_arrayColumns;
     private $_arrayRows;
 
     public function __construct($fromDB)
@@ -16,10 +16,10 @@ class Table
         if(is_string($name))
         $this->_name = $name;
     }
-    public function setArrayType($arrayType)
+    public function setArrayColumns($arrayColumns)
     {
-        if(is_array($arrayType))
-        $this->_arrayType = $arrayType;
+        if(is_array($arrayColumns))
+        $this->_arrayColumns = $arrayColumns;
     }
     public function setArrayRows(Array $arrayRows)
     {
@@ -32,9 +32,9 @@ class Table
     {
         return $this->_name;
     }
-    public function arrayType()
+    public function arrayColumns()
     {
-        return $this->_arrayType;
+        return $this->_arrayColumns;
     }
     public function arrayRow()
     {

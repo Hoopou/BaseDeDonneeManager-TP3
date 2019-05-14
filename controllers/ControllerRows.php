@@ -29,13 +29,15 @@
             //ici, la variable database contient la bonne base de donnée à qui il faut ajouter les tables
             $model->implementsTablesIntoDatabase($conn , $database);
             // ici, la base de donnée contient toutes les tables 
-            $table = ControllerHelper::getTableWithName($database , $tableName);
+            $table = ControllerHelper::getTableWithName($database , $tableName);  //ici, il faut construire la table: au complet
+            // $table = ControllerHelper::getColumnsFromTable($database , $tableName);  //ici, il faut construire la table: au complet
             //ici, la table est la bonne
             $table = $model->implementsRowsIntoTable($conn ,$database, $table);
+            $table->setArrayColumns($model->getAllColumnsFromTable($conn,$database->name(),$tableName));
             //ici, la table contient toutes les rangées avec les items
             // var_dump($database->arrayTables());
             // var_dump($table->arrayRow());
-
+            
             $this->_view = new View('Rows');
             $this->_view->generate(array('table' => $table));
         }

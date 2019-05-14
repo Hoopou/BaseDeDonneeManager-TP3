@@ -29,6 +29,10 @@ class ControllerHelper{
         }
         return $_tempTable;
     }
+
+    public static function getColumnsFromTable($database , $tableName , Model $DbManager){
+        $_tempArrayColumns[] = new Column("");
+    }
 }
 
 
