@@ -5,30 +5,31 @@ class Row
     private $_arrayItems = array();
     private $_myId;
 
-    public function __construct($data , int $id)
+    public function __construct($data, int $id)
     {
         $this->_myId = $id;
-        foreach($data as $key => $value)
-        {
-            $item = new Item($value);
-            array_push($this->_arrayItems , $item);
+        if($data != null){
+            foreach ($data as $key => $value) {
+                $item = new Item($value);
+                array_push($this->_arrayItems, $item);
+            }
         }
     }
 
     public function setMyId($myId)
     {
-        if(is_int($myId))
-        $this->_myId = $myId;
+        if (is_int($myId))
+            $this->_myId = $myId;
     }
     public function setArrayType($arrayType)
     {
-        if(is_array($arrayType))
-        $this->_arrayType = $arrayType;
+        if (is_array($arrayType))
+            $this->_arrayType = $arrayType;
     }
     public function setArrayItems($arrayItems)
     {
-        if(is_array($arrayItems))
-        $this->_arrayItems = $arrayItems;
+        if (is_array($arrayItems))
+            $this->_arrayItems = $arrayItems;
     }
 
     //GETTERS
@@ -44,8 +45,4 @@ class Row
     {
         return $this->_arrayItems;
     }
-
-
-
-
 }

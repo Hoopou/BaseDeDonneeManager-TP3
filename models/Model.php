@@ -106,8 +106,36 @@
 
         }
 
-        function updateRowWhere(Connection $_connection){// Command = 'UPDATE [TABLE] SET [COLUMN_NAME]=[NEW_VALUES],[COLUMN_NAME]=[NEW_VALUES]... WHERE [COLUMN_NAME]=[OLD_VALUES] ...;'
+        function updateRowWhere(Connection $_connection , String $databaseName, String $tableName, $columns , $oldRow, $newRow){// Command = 'UPDATE [TABLE] SET [COLUMN_NAME]=[NEW_VALUES],[COLUMN_NAME]=[NEW_VALUES]... WHERE [COLUMN_NAME]=[OLD_VALUES] ...;'
+            $command = 'UPDATE ' .$databaseName.'.'.$tableName. ' SET ';
+            for($i = 0 ; $i<count($columns); $i++){
+                if($newRow->arrayItems()[$i]->value() != null && $newRow->arrayItems()[$i]->value() != ''){
+                    $command = $command.($columns[$i]->name().'=\''.htmlspecialchars($newRow->arrayItems()[$i]->value()).'\' ');
+                }
+                if($i+1<count($columns) ){
+                    if($newRow->arrayItems()[$i+1]->value() != null && $newRow->arrayItems()[$i+1]->value() != ''){
+                        $command = $command.' , ';
+                    }
+                }
+            }
+            $command = $command.'WHERE ';
+            for($i = 0 ; $i<count($columns); $i++){
+                if($oldRow->arrayItems()[$i]->value() != null && $oldRow->arrayItems()[$i]->value() != ''){
+                    $command = $command.($columns[$i]->name().'=\''.htmlspecialchars($oldRow->arrayItems()[$i]->value()).'\' ');
+                }
+                if($i+1<count($columns) ){
+                    if($oldRow->arrayItems()[$i+1]->value() != null && $oldRow->arrayItems()[$i+1]->value() != ''){
+                        $command = $command.' AND ';
+                    }
+                }
+            }
+            $command = $command.';';
 
+            echo($command);
+            $req = $this->getBdd($_connection)->prepare($command) ;
+            $req->execute();
+            return $req->rowCount();
+            $req->closeCursor();
         }
 
         function getTableInformations(Connection $_connection , String $databaseName, String $tableName){
@@ -132,6 +160,3 @@
 
         
     }
-
-
-?>

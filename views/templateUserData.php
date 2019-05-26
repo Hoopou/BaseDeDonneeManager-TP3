@@ -4,3 +4,4 @@
 <input type="hidden" name="password" value="<?=$_POST['password']?>"/>
 <input type="hidden" name="database" value="<?=$_POST['database']?>">
 <input type="hidden" name="table" value="<?=$_POST['table']?>">
+<input type="hidden" name="rowid" value="<?=$_POST['rowid']?>">

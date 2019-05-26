@@ -1,7 +1,7 @@
 <?php
     require_once('views/View.php');
     require_once('controllers/ControllerHelper.php');
-    class ControllerModifierRow
+    class ControllerConfirmerModifierRow
     {
 
         private $_view;
@@ -15,13 +15,13 @@
             }else if(isset($_POST['database']) && isset($_POST['table'])){
                 $databases = $_POST['database'];
                 $conn = ControllerHelper::buildConnection();
-                $this->afficherRows($conn , $databases , $_POST['table']);
+                $this->afficherRows($conn , $databases , $_POST['table'], $_POST['rowid']);
             }else{
                 throw new Exception('Page introuvable');
             }
         }    
 
-        private function afficherRows(Connection $conn , String $databaseName , String $tableName){
+        private function afficherRows(Connection $conn , String $databaseName , String $tableName, $myid){
             $model = new ModelsManager();
             $model->implementsDatabasesIntoConnection($conn);
             //ici, la connection a implementer toute les bases de donnée sans les tables
@@ -38,16 +38,39 @@
             // $temp_columns = $table->arrayColumns();
             // array_shift($temp_columns);
             // $table->setArrayColumns($temp_columns);
-            //ici, la table contient toutes les rangées avec les items
+
             
-            // $_row = $table->arrayRow()[0];
-            // $_tempItems = $_row->arrayItems();
-            // array_shift($_tempItems);
-            // $_row->setArrayItems($_tempItems);
+            $OldRow = null;
+            foreach($table->arrayRow() as $row){
+                if($row->myId() == $myid){
+                    $OldRow = $row;
+                    break;
+                }
+            }
+            // $_tempOldArrayItem = $OldRow->arrayItems();
+            // array_shift($_tempOldArrayItem);
+            // $OldRow->setArrayItems($_tempOldArrayItem);
+
+            $_NewRow = new Row(null , $myid);
+            $_tempNewArrayItem = array();
+            foreach($table->arrayColumns() as $_col){
+                $_item = new Item($_POST[$_col->name()]);
+                $_item->setType($_col->type());
+                array_push($_tempNewArrayItem , $_item);
+            }
+            $_NewRow->setArrayItems($_tempNewArrayItem);
+            
+            $message = "";
+            $model = new Model();
+            if($model->updateRowWhere($conn ,$databaseName, $tableName, $table->arrayColumns() , $OldRow , $_NewRow) > 0){
+                $message = "La rangée à bien été sauvegarder!";
+            }else{
+                $message = "Aucune rangée n'a été affectée , IL SEMBLE Y AVOIR EU UNE ERREUR!";
+            }
+            $this->_view = new View('message');
+            $this->_view->generate(array('message' => $message));
 
 
-            $this->_view = new View('ModifierRow');
-            $this->_view->generate(array('table' => $table , '_row' => $table->arrayRow()[$_POST['rowid']]));
         }
     }
 

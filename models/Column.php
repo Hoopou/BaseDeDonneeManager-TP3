@@ -6,6 +6,7 @@
         private $_canBeNull;
         private $_key;
         private $_isAutoIncrement;
+        private $_displayableType;
 
         public function __construct($fromDB)
         {
@@ -31,8 +32,10 @@
                 if( strpos($type,'('))
                     $type = substr($type, 0, strrpos($type, '('));
                     
-                    if(Type::isValidName($type))
+                    if(Type::isValidName($type)){
                         $this->_type = $type;
+                        $this->setDisplayableType($type);
+                    }
             }
         }
         public function setCanBeNull(bool $canBeNull)
@@ -47,6 +50,32 @@
         public function setIsAutoIncrement(bool $autoIncrement)
         {
             $this->_isAutoIncrement = $autoIncrement;
+        }
+        public function setDisplayableType($type)  //à tester
+        {
+            if(is_string($type))
+            {
+                // if( strpos($type,'('))
+                //     $type = preg_split('(' , $type)[0];
+                if( strpos($type,'('))
+                    $type = substr($type, 0, strrpos($type, '('));
+                    if(Type::isValidName($type)){
+                        //echo(Type::getConstantName(Type::getConstantNumber($type)) . ":" . Type::getConstantNumber($type));
+                        if($this->between(Type::getConstantNumber($type) , 0 , 5)){
+                            $this->_displayableType = "text";
+                        }elseif($this->between(Type::getConstantNumber($type) , 5 , 20)){
+                            $this->_displayableType = "text";
+                        }elseif($this->between(Type::getConstantNumber($type) , 20 , 40)){
+                            $this->_displayableType = "text";
+                        }elseif($this->between(Type::getConstantNumber($type) , 40 , 60)){
+                            $this->_displayableType = "date";
+                        }elseif($this->between(Type::getConstantNumber($type) , 60 , 80)){
+                            $this->_displayableType = "N/A";
+                        }elseif($this->between(Type::getConstantNumber($type) , 80 , 100)){
+                            $this->_displayableType = "file";
+                        }
+                    }
+            }
         }
     
         //GETTERS
@@ -70,9 +99,16 @@
         {
             return $this->_isAutoIncrement;
         }
+        public function displayableType(){
+            return $this->_displayableType;
+        }
 
         function endsWith($haystack, $needle) {
             return substr_compare($haystack, $needle, -strlen($needle)) === 0;
+        }
+
+        private function between($value , $minimalValue , $maximalValueEXC ){
+            return (($value>=$minimalValue) && ($value<$maximalValueEXC));
         }
 
     }

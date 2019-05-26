@@ -19,6 +19,7 @@
                 <td>
                     <form action="<?= URL ?>?url=ModifierRow" method="post" class="center">
                         <?php require('templateUserData.php'); ?>
+                        <input type="hidden" name="rowid" value="<?=$row->myid()?>">
                         <input type="submit" value="Modifier" name="action" class="center" />
                     </form>
                 </td>
@@ -26,6 +27,7 @@
                 <td>
                     <form action="<?= URL ?>?url=SupprimerRow" method="post" class="center">
                         <?php require('templateUserData.php'); ?>
+                        <input type="hidden" name="rowid" value="<?=$row->myid()?>">
                         <input type="submit" value="Supprimer" name="action" class="center" />
                     </form>
                 </td>
