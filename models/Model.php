@@ -102,8 +102,26 @@
 
         }
 
-        function deleteRowWhere(Connection $_connection){// Command = 'DELETE FROM [TABLE] WHERE [COLUMN_NAME]=[VALUES] AND [COLUMN_NAME]=[VALUES] ...;'
+        function deleteRowWhere(Connection $_connection , String $databaseName, String $tableName, $columns , $oldRow){// Command = 'DELETE FROM [TABLE] WHERE [COLUMN_NAME]=[VALUES] AND [COLUMN_NAME]=[VALUES] ...;'
+            $command = 'DELETE FROM ' .$databaseName.'.'.$tableName. ' WHERE ';
+            
+            for($i = 0 ; $i<count($columns); $i++){
+                if($oldRow->arrayItems()[$i]->value() != null && $oldRow->arrayItems()[$i]->value() != ''){
+                    $command = $command.($columns[$i]->name().'=\''.htmlspecialchars($oldRow->arrayItems()[$i]->value()).'\' ');
+                }
+                if($i+1<count($columns) ){
+                    if($oldRow->arrayItems()[$i+1]->value() != null && $oldRow->arrayItems()[$i+1]->value() != ''){
+                        $command = $command.' AND ';
+                    }
+                }
+            }
+            $command = $command.';';
 
+            echo($command);
+            $req = $this->getBdd($_connection)->prepare($command) ;
+            $req->execute();
+            return $req->rowCount();
+            $req->closeCursor();
         }
 
         function updateRowWhere(Connection $_connection , String $databaseName, String $tableName, $columns , $oldRow, $newRow){// Command = 'UPDATE [TABLE] SET [COLUMN_NAME]=[NEW_VALUES],[COLUMN_NAME]=[NEW_VALUES]... WHERE [COLUMN_NAME]=[OLD_VALUES] ...;'
@@ -130,6 +148,35 @@
                 }
             }
             $command = $command.';';
+
+            echo($command);
+            $req = $this->getBdd($_connection)->prepare($command) ;
+            $req->execute();
+            return $req->rowCount();
+            $req->closeCursor();
+        }
+
+        function addRow(Connection $_connection , String $databaseName, String $tableName, $columns , $newRow){// Command = 'UPDATE [TABLE] SET [COLUMN_NAME]=[NEW_VALUES],[COLUMN_NAME]=[NEW_VALUES]... WHERE [COLUMN_NAME]=[OLD_VALUES] ...;'
+            $commandFirst = 'INSERT INTO ' .$databaseName.'.`'.$tableName. '` (';
+            $command = '';
+            for($i = 0 ; $i<count($columns); $i++){
+                $commandFirst = $commandFirst.'`'.$columns[$i]->name().'`';
+                if($newRow->arrayItems()[$i]->value() != null && $newRow->arrayItems()[$i]->value() != ''){
+                    $command = $command.'\''.htmlspecialchars($newRow->arrayItems()[$i]->value()).'\'';
+                }else{
+                    $command = $command.'null';
+                }
+                if($i+1<count($columns) ){
+
+                        $commandFirst = $commandFirst.',';
+                        $command = $command.' , ';
+                    
+                }
+            }
+            
+            $commandFirst = $commandFirst.') VALUES (';
+            $command = $command.');';
+            $command = $commandFirst.$command;
 
             echo($command);
             $req = $this->getBdd($_connection)->prepare($command) ;

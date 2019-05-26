@@ -1,7 +1,7 @@
 <?php
     require_once('views/View.php');
     require_once('controllers/ControllerHelper.php');
-    class ControllerConfirmerModifierRow
+    class ControllerConfirmerSupprimerRow
     {
 
         private $_view;
@@ -50,26 +50,11 @@
             // $_tempOldArrayItem = $OldRow->arrayItems();
             // array_shift($_tempOldArrayItem);
             // $OldRow->setArrayItems($_tempOldArrayItem);
-
-            $_NewRow = new Row(null , $myid);
-            $_tempNewArrayItem = array();
-            foreach($table->arrayColumns() as $_col){
-                $content = null;
-                if($_col->displayableType() == 'file'){
-                    $content = $_FILES[$_col->name()];
-                }else{
-                    $content = $_POST[$_col->name()];
-                }
-                $_item = new Item($content);
-                $_item->setType($_col->type());
-                array_push($_tempNewArrayItem , $_item);
-            }
-            $_NewRow->setArrayItems($_tempNewArrayItem);
             
             $message = "";
             $model = new Model();
-            if($model->updateRowWhere($conn ,$databaseName, $tableName, $table->arrayColumns() , $OldRow , $_NewRow) > 0){
-                $message = "La rangée à bien été sauvegarder!";
+            if($model->deleteRowWhere($conn ,$databaseName, $tableName, $table->arrayColumns() , $OldRow) > 0){
+                $message = "La rangée à bien été supprimer!";
             }else{
                 $message = "Aucune rangée n'a été affectée , IL SEMBLE Y AVOIR EU UNE ERREUR!";
             }

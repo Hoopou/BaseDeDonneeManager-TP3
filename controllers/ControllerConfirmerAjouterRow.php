@@ -1,7 +1,7 @@
 <?php
     require_once('views/View.php');
     require_once('controllers/ControllerHelper.php');
-    class ControllerConfirmerModifierRow
+    class ControllerConfirmerAjouterRow
     {
 
         private $_view;
@@ -15,13 +15,13 @@
             }else if(isset($_POST['database']) && isset($_POST['table'])){
                 $databases = $_POST['database'];
                 $conn = ControllerHelper::buildConnection();
-                $this->afficherRows($conn , $databases , $_POST['table'], $_POST['rowid']);
+                $this->afficherRows($conn , $databases , $_POST['table']);
             }else{
                 throw new Exception('Page introuvable');
             }
         }    
 
-        private function afficherRows(Connection $conn , String $databaseName , String $tableName, $myid){
+        private function afficherRows(Connection $conn , String $databaseName , String $tableName){
             $model = new ModelsManager();
             $model->implementsDatabasesIntoConnection($conn);
             //ici, la connection a implementer toute les bases de donnée sans les tables
@@ -40,27 +40,14 @@
             // $table->setArrayColumns($temp_columns);
 
             
-            $OldRow = null;
-            foreach($table->arrayRow() as $row){
-                if($row->myId() == $myid){
-                    $OldRow = $row;
-                    break;
-                }
-            }
             // $_tempOldArrayItem = $OldRow->arrayItems();
             // array_shift($_tempOldArrayItem);
             // $OldRow->setArrayItems($_tempOldArrayItem);
 
-            $_NewRow = new Row(null , $myid);
+            $_NewRow = new Row(null , $table->arrayRow()[count($table->arrayRow())-1]->myid());
             $_tempNewArrayItem = array();
             foreach($table->arrayColumns() as $_col){
-                $content = null;
-                if($_col->displayableType() == 'file'){
-                    $content = $_FILES[$_col->name()];
-                }else{
-                    $content = $_POST[$_col->name()];
-                }
-                $_item = new Item($content);
+                $_item = new Item($_POST[$_col->name()]);
                 $_item->setType($_col->type());
                 array_push($_tempNewArrayItem , $_item);
             }
@@ -68,8 +55,8 @@
             
             $message = "";
             $model = new Model();
-            if($model->updateRowWhere($conn ,$databaseName, $tableName, $table->arrayColumns() , $OldRow , $_NewRow) > 0){
-                $message = "La rangée à bien été sauvegarder!";
+            if($model->addRow($conn ,$databaseName, $tableName, $table->arrayColumns() , $_NewRow) > 0){
+                $message = "La rangée à bien été ajoutée!";
             }else{
                 $message = "Aucune rangée n'a été affectée , IL SEMBLE Y AVOIR EU UNE ERREUR!";
             }
