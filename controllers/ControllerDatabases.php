@@ -21,11 +21,9 @@
             $this->_model = new ModelsManager();
 
             $conn = ControllerHelper::buildConnection();
-
             $connection = $this->_model->getConnectionValidity($conn);
 
             if($connection){
-                $GLOBALS['ip'] = 'salut21';
                 $this->afficherBaseDonnees($conn);
             }else{
                 throw new Exception('Les informations entrées ne sont pas valides!');
