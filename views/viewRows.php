@@ -2,7 +2,7 @@
     <table>
         <tr>
             <?php foreach ($table->arrayColumns() as $columns) : ?>
-                <th><?= $columns->name()?></th>
+                <th><?= $columns->name().' ['.$columns->type().']'?></th>
             <?php endforeach; ?>
             <th> Modifier</th>
             <th> Supprimer</th>
@@ -12,7 +12,15 @@
             <tr>
             <?php foreach ($row->arrayItems() as $item) : ?>
                 <td>
-                    <p><?= $item->value() ?></p>
+                    <p>
+                        <?=Type::getcustomType($item->type()) == 'file'?>
+                        <?php if(strlen($item->value()) >100 ):?>
+                        <?=$item->type().' [CONTENT]'?>
+
+                        <?php else:?>
+                        <?=$item->value()?>
+                        <?php endif; ?>
+                    </p>
                 </td>
                 <?php endforeach; ?>
 

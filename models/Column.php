@@ -61,19 +61,7 @@
                     $type = substr($type, 0, strrpos($type, '('));
                     if(Type::isValidName($type)){
                         //echo(Type::getConstantName(Type::getConstantNumber($type)) . ":" . Type::getConstantNumber($type));
-                        if($this->between(Type::getConstantNumber($type) , 0 , 5)){
-                            $this->_displayableType = "text";
-                        }elseif($this->between(Type::getConstantNumber($type) , 5 , 20)){
-                            $this->_displayableType = "text";
-                        }elseif($this->between(Type::getConstantNumber($type) , 20 , 40)){
-                            $this->_displayableType = "text";
-                        }elseif($this->between(Type::getConstantNumber($type) , 40 , 60)){
-                            $this->_displayableType = "date";
-                        }elseif($this->between(Type::getConstantNumber($type) , 60 , 80)){
-                            $this->_displayableType = "N/A";
-                        }elseif($this->between(Type::getConstantNumber($type) , 80 , 100)){
-                            $this->_displayableType = "file";
-                        }
+                        $this->_displayableType = Type::getcustomType($type);
                     }
             }
         }
@@ -105,10 +93,6 @@
 
         function endsWith($haystack, $needle) {
             return substr_compare($haystack, $needle, -strlen($needle)) === 0;
-        }
-
-        private function between($value , $minimalValue , $maximalValueEXC ){
-            return (($value>=$minimalValue) && ($value<$maximalValueEXC));
         }
 
     }

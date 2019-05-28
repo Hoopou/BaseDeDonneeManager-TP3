@@ -12,10 +12,6 @@
 <hr>
 
 <div class="center">
-    <b>Vous pouvez modifier les données des tables seulement si la première colonne est une clé primaire ou valeur unique!</b>
-</div>
-
-<div class="center">
     <form action="?url=APropos" method="post" class="center">
         <label for="button" class="right" style="margin-top:10px;"><input type="submit" value="À Propos" class="center" /><br />
     </form>

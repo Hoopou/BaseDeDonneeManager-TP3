@@ -1,0 +1,4 @@
+POST https://api.freshbooks.com/timetracking/business/1911245/time_entries
+
+client ID   : fac3a44b0ffe80d9370d50ff1e85cec069d781c6d6c826f8d626920f8e728623
+client Secret : d516a780f352a72384a51510421fa70a6db7318efa72d02b97121e6609bdd476

@@ -2,7 +2,7 @@
 class Item
 {
     private $_value = "N/A";
-    private $_type;
+    private $_type = '';
 
     public function __construct($itemFromBd)
     {

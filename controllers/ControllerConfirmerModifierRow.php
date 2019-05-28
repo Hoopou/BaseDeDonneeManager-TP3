@@ -56,7 +56,31 @@
             foreach($table->arrayColumns() as $_col){
                 $content = null;
                 if($_col->displayableType() == 'file'){
+                    echo("la colonne ".$_col->name()." est de type fichier");
                     $content = $_FILES[$_col->name()];
+                    //du site
+
+                    $statusMsg = '';
+
+                    // File upload path
+                    $targetDir = "./STOCKAGE/";
+                    $fileName = basename($_FILES[$_col->name()]["name"]);
+                    $targetFilePath = $targetDir . $fileName;
+                    $fileType = pathinfo($targetFilePath,PATHINFO_EXTENSION);
+
+                    echo("<p>".$targetDir."</p>");
+                    echo("<p>".$fileName."</p>");
+                    echo("<p>".$targetFilePath."</p>");
+                    echo("<p>".$fileType."</p>");
+
+                    $filename = "uploads/".$_FILES[$_col->name()]["tmp_name"];
+
+                    if(move_uploaded_file($_FILES[$_col->name()]["tmp_name"], $targetFilePath))
+                    {
+                        $content = file_get_contents($targetFilePath);                        
+                    }
+                    var_dump($content);
+
                 }else{
                     $content = $_POST[$_col->name()];
                 }

@@ -43,6 +43,19 @@ class Row
     }
     public function arrayItems()
     {
+        if($this->_arrayType != null){
+            $i=0;
+            foreach($this->_arrayItems as $_tempItem){
+
+                if($this->_arrayType[$i]->type() != null && $this->_arrayType[$i]->type() != ''){
+                    $_tempItem->setType($this->arrayType[$i]);
+                }else{
+                    $_tempItem->setType('');
+                }
+                
+                $i++;
+            }
+        }
         return $this->_arrayItems;
     }
 }

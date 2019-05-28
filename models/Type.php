@@ -83,6 +83,27 @@ class Type extends BasicEnum {
         }
         return $constNumber;
     }
+
+    public static function getcustomType($type){
+        if(Type::between(Type::getConstantNumber($type) , 0 , 5)){
+            return "text";
+        }elseif(Type::between(Type::getConstantNumber($type) , 5 , 20)){
+            return "text";
+        }elseif(Type::between(Type::getConstantNumber($type) , 20 , 40)){
+            return "text";
+        }elseif(Type::between(Type::getConstantNumber($type) , 40 , 60)){
+            // return "date";
+            return "text";
+        }elseif(Type::between(Type::getConstantNumber($type) , 60 , 80)){
+            return "N/A";
+        }elseif(Type::between(Type::getConstantNumber($type) , 80 , 100)){
+            return "file";
+        }
+    }
+
+    private static function between($value , $minimalValue , $maximalValueEXC ){
+        return (($value>=$minimalValue) && ($value<$maximalValueEXC));
+    }
 }
 
 
