@@ -1,5 +1,4 @@
 <div>
-    <h4 style="color:red;">Voulez vous vraiment supprimer cette rangée?</h4>
     <table>
         <form action="<?= URL ?>?url=ConfirmerAjouterRow" method="post" class="center">
             <?php require('templateUserData.php'); ?>

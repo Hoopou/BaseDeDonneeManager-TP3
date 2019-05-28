@@ -78,7 +78,13 @@
                     {
                         $content = file_get_contents($targetFilePath);                        
                     }
-                     $content = $fileName."#".base64_encode($content);
+
+                    if($fileName != ''){
+                        $content = $fileName."#".base64_encode($content);
+                    }else{
+                        $content = '#';
+                    }
+
                 }else{
                     $content = $_POST[$_col->name()];
                 }

@@ -46,10 +46,8 @@
                         // echo("<img src='data:image/jpeg;base64,'".base64_encode($content)."'" );
                         //You dont need to decode it again.
                         $filename = explode('#' , $content)[0];
-                        $content = explode('#' , $content)[1];
-                        echo(substr($filename, strrpos($filename, '.')+1));
+                        $content = trim(explode('#' , $content)[1] , '#');
                         if(substr($filename, strrpos($filename, '.')+1) == 'png' || substr($filename, strrpos($filename, '.')+1) == 'jpg' ){
-                            echo("j'ai trouver une image: " . $filename);
                             $content = "<img src='data:;base64,{$content}'/>";
                         }else{
                             $content = $_tempRow->arrayItems()[$i]->type().'[CONTENT]';
