@@ -131,7 +131,7 @@
                     if($columns[$i]->displayableType() != 'file'){
                         $command = $command.($columns[$i]->name().'=\''.htmlspecialchars($newRow->arrayItems()[$i]->value()).'\' ');
                     }else{ //  est un fichier
-                        $command = $command.($columns[$i]->name().'=\''.base64_encode($newRow->arrayItems()[$i]->value()).'\' ');
+                        $command = $command.($columns[$i]->name().'=\''.$newRow->arrayItems()[$i]->value().'\' ');
                     }
                 }
                 if($i+1<count($columns) ){
@@ -166,7 +166,11 @@
             for($i = 0 ; $i<count($columns); $i++){
                 $commandFirst = $commandFirst.'`'.$columns[$i]->name().'`';
                 if($newRow->arrayItems()[$i]->value() != null && $newRow->arrayItems()[$i]->value() != ''){
-                    $command = $command.'\''.htmlspecialchars($newRow->arrayItems()[$i]->value()).'\'';
+                    if($columns[$i]->displayableType() != 'file'){
+                        $command = $command.($columns[$i]->name().'=\''.htmlspecialchars($newRow->arrayItems()[$i]->value()).'\' ');
+                    }else{ //  est un fichier
+                        $command = $command.($columns[$i]->name().'=\''.$newRow->arrayItems()[$i]->value().'\' ');
+                    }
                 }else{
                     $command = $command.'null';
                 }

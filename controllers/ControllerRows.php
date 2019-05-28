@@ -38,6 +38,30 @@
             // var_dump($database->arrayTables());
             // var_dump($table->arrayRow());
             
+            foreach($table->arrayRow() as $_tempRow){
+                for($i = 0 ; $i<count($_tempRow->arrayItems()); $i++){
+                    $content = $_tempRow->arrayItems()[$i]->value();
+                    if(Type::getcustomType($_tempRow->arrayItems()[$i]->type()) == 'file'){
+                        
+                        // echo("<img src='data:image/jpeg;base64,'".base64_encode($content)."'" );
+                        //You dont need to decode it again.
+                        $filename = explode('#' , $content)[0];
+                        $content = explode('#' , $content)[1];
+                        echo(substr($filename, strrpos($filename, '.')+1));
+                        if(substr($filename, strrpos($filename, '.')+1) == 'png' || substr($filename, strrpos($filename, '.')+1) == 'jpg' ){
+                            echo("j'ai trouver une image: " . $filename);
+                            $content = "<img src='data:;base64,{$content}'/>";
+                        }else{
+                            $content = $_tempRow->arrayItems()[$i]->type().'[CONTENT]';
+                        }
+
+                        $_tempRow->arrayItems()[$i]->setValue($content);
+                    }else{
+                        $_tempRow->arrayItems()[$i]->setValue($content);
+                    }
+                }
+            }
+            
             $this->_view = new View('Rows');
             $this->_view->generate(array('table' => $table));
         }

@@ -38,6 +38,22 @@ class Table
     }
     public function arrayRow()
     {
+        // var_dump($this->_arrayColumns);
+        if($this->_arrayColumns != null){
+            $i=0;
+            $arrayType = array();
+            foreach($this->arrayColumns() as $_tempColumn){
+                if($_tempColumn != null && $_tempColumn != ''){
+                    array_push($arrayType , $_tempColumn->type());
+                }else{
+                    array_push($arrayType , '');
+                }
+            }
+            foreach($this->_arrayRows as $_tempRow){
+                $_tempRow->setArrayType($arrayType);
+            }
+
+        }
         return $this->_arrayRows;
     }
 

@@ -56,7 +56,6 @@
             foreach($table->arrayColumns() as $_col){
                 $content = null;
                 if($_col->displayableType() == 'file'){
-                    echo("la colonne ".$_col->name()." est de type fichier");
                     $content = $_FILES[$_col->name()];
                     //du site
 
@@ -68,10 +67,10 @@
                     $targetFilePath = $targetDir . $fileName;
                     $fileType = pathinfo($targetFilePath,PATHINFO_EXTENSION);
 
-                    echo("<p>".$targetDir."</p>");
-                    echo("<p>".$fileName."</p>");
-                    echo("<p>".$targetFilePath."</p>");
-                    echo("<p>".$fileType."</p>");
+                    // echo("<p>".$targetDir."</p>");
+                    // echo("<p>".$fileName."</p>");
+                    // echo("<p>".$targetFilePath."</p>");
+                    // echo("<p>".$fileType."</p>");
 
                     $filename = "uploads/".$_FILES[$_col->name()]["tmp_name"];
 
@@ -79,8 +78,7 @@
                     {
                         $content = file_get_contents($targetFilePath);                        
                     }
-                    var_dump($content);
-
+                     $content = $fileName."#".base64_encode($content);
                 }else{
                     $content = $_POST[$_col->name()];
                 }

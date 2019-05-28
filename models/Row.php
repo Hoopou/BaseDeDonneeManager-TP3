@@ -1,7 +1,7 @@
 <?php
 class Row
 {
-    private $_arrayType;
+    private $_arrayType = array();
     private $_arrayItems = array();
     private $_myId;
 
@@ -43,16 +43,14 @@ class Row
     }
     public function arrayItems()
     {
-        if($this->_arrayType != null){
+        if(!empty($this->_arrayType)){
             $i=0;
             foreach($this->_arrayItems as $_tempItem){
-
-                if($this->_arrayType[$i]->type() != null && $this->_arrayType[$i]->type() != ''){
-                    $_tempItem->setType($this->arrayType[$i]);
+                if($this->_arrayType[$i] != null && $this->_arrayType[$i] != ''){
+                    $_tempItem->setType($this->_arrayType[$i]);
                 }else{
                     $_tempItem->setType('');
-                }
-                
+                }                
                 $i++;
             }
         }

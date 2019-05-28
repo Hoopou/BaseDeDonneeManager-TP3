@@ -1,4 +1,5 @@
 <div class="center">
+
     <table>
         <tr>
             <?php foreach ($table->arrayColumns() as $columns) : ?>
@@ -12,15 +13,7 @@
             <tr>
             <?php foreach ($row->arrayItems() as $item) : ?>
                 <td>
-                    <p>
-                        <?=Type::getcustomType($item->type()) == 'file'?>
-                        <?php if(strlen($item->value()) >100 ):?>
-                        <?=$item->type().' [CONTENT]'?>
-
-                        <?php else:?>
-                        <?=$item->value()?>
-                        <?php endif; ?>
-                    </p>
+                    <p><?=$item->value()?></p>
                 </td>
                 <?php endforeach; ?>
 
